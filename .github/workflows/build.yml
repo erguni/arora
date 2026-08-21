@@ -15,13 +15,18 @@ jobs:
       - name: Java 17 Kur
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Gradle Derleyiciyi Hazirla
+      - name: Gradle Hazirla
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-version: '8.5'
+
+      - name: Android SDK ve Lisanslari Ayarla
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: APK Derle
         run: gradle assembleDebug --stacktrace
